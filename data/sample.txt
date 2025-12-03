@@ -1,0 +1,14 @@
+Introduction:
+This document is a simple sample text used for basic extraction tasks. It contains headings, short paragraphs, and a few mentions of figures and tables.
+
+Background:
+Figure 1 shows the overall system structure. Table 1 lists the key parameters used in the experiment.
+
+Methodology:
+The experiment was conducted using standard procedures. Figure 2 illustrates the workflow used by the researchers.
+
+Results:
+Table 2 presents the measured values collected during the test.
+
+Conclusion:
+This text allows practice of line counting, heading detection, regex extraction, and basic text analysis.
