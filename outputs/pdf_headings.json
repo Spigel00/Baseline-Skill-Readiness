@@ -1,0 +1,74 @@
+[
+  {
+    "index": 1,
+    "number": null,
+    "title_short": "Abstract",
+    "title_full": "Abstract This paper presents an analysis of text extraction methods applied to semi-structured scientific documents, focusing on PDF and DOCX formats. We evaluate a range of heuristics including heading detection, caption extraction, and reference linking. Our results show that hybrid rule-based approaches outperform naive text extraction in cases where document structure is partially preserved. The study aims to assist researchers developing automated metadata generation pipelines",
+    "classification": "known",
+    "method": "known_re"
+  },
+  {
+    "index": 2,
+    "number": "1",
+    "title_short": "Introduction",
+    "title_full": "Introduction Scientific documents are commonly distributed in PDF and DOCX formats, each presenting unique challenges for automated extraction. PDFs often lose logical reading order, while DOCX files retain semantic structure such as headings and styled paragraphs. This paper evaluates methods to reliably extract headings, captions, references, and other metadata components from both formats",
+    "classification": "numbered",
+    "method": "num_re"
+  },
+  {
+    "index": 3,
+    "number": "2",
+    "title_short": "Related",
+    "title_full": "Related Work Previous studies have explored layout-aware extraction, natural language processing pipelines, and machine learning models for document segmentation. However, limited work focuses on lightweight, rule-based approaches suitable for small-scale research workflows. Recent advancements in agentic AI systems offer new opportunities for semi-automated document processing pipelines",
+    "classification": "numbered",
+    "method": "num_re"
+  },
+  {
+    "index": 4,
+    "number": "3",
+    "title_short": "Methodology",
+    "title_full": "Methodology Our approach evaluates three categories of extraction techniques: rule-based heuristics, regex-driven caption detection, and block-based text grouping for PDFs. Figure 1 illustrates the overall extraction pipeline used in our experiments. Table 1 summarizes the documents included in the dataset",
+    "classification": "numbered",
+    "method": "num_re"
+  },
+  {
+    "index": 5,
+    "number": "4",
+    "title_short": "Results",
+    "title_full": "Results Figure 2 highlights the accuracy comparison between PDF and DOCX extraction outputs. We observed that DOCX-based extraction consistently outperformed PDF-based extraction due to richer structural metadata. Table 2 presents performance metrics including precision and recall for heading and caption detection tasks",
+    "classification": "numbered",
+    "method": "num_re"
+  },
+  {
+    "index": 6,
+    "number": "5",
+    "title_short": "Discussion",
+    "title_full": "Discussion While rule-based methods are interpretable and lightweight, they fail in cases where documents follow unconventional layouts. This suggests the need for hybrid techniques that combine rule-based logic with ML-driven classification. Future work includes integrating transformer-based models to detect semantic sections and improve caption-reference linking accuracy",
+    "classification": "numbered",
+    "method": "num_re"
+  },
+  {
+    "index": 7,
+    "number": "6",
+    "title_short": "Conclusion",
+    "title_full": "Conclusion This study demonstrates the effectiveness of structure-aware extraction heuristics for scientific documents. Our findings provide a foundation for building scalable, automated metadata generation pipelines",
+    "classification": "numbered",
+    "method": "num_re"
+  },
+  {
+    "index": 8,
+    "number": null,
+    "title_short": "Figures",
+    "title_full": "Figures Figure 1: Overview of the extraction pipeline architecture. Figure 2: Accuracy comparison between PDF and DOCX extraction techniques",
+    "classification": "known",
+    "method": "known_re"
+  },
+  {
+    "index": 9,
+    "number": null,
+    "title_short": "Tables",
+    "title_full": "Tables Table 1: Dataset summary including document counts and formats. Table 2: Performance metrics for heading and caption detection tasks",
+    "classification": "known",
+    "method": "known_re"
+  }
+]
