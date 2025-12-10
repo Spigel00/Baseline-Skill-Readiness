@@ -1,0 +1,30 @@
+[
+  {
+    "index": 8,
+    "type": "figure",
+    "number": 1,
+    "text": "Figure 1: Overview of the extraction pipeline architecture.",
+    "caption_text": "Overview of the extraction pipeline architecture."
+  },
+  {
+    "index": 8,
+    "type": "figure",
+    "number": 2,
+    "text": "Figure 2: Accuracy comparison between PDF and DOCX extraction techniques.",
+    "caption_text": "Accuracy comparison between PDF and DOCX extraction techniques."
+  },
+  {
+    "index": 9,
+    "type": "table",
+    "number": 1,
+    "text": "Table 1: Dataset summary including document counts and formats.",
+    "caption_text": "Dataset summary including document counts and formats."
+  },
+  {
+    "index": 9,
+    "type": "table",
+    "number": 2,
+    "text": "Table 2: Performance metrics for heading and caption detection tasks.",
+    "caption_text": "Performance metrics for heading and caption detection tasks."
+  }
+]
