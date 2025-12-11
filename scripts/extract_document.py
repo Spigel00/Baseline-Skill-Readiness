@@ -270,6 +270,28 @@ def detect_references(indexed_paras):
 
     return references
 
+def build_captions_map(captions):
+    m = {}
+    for c in captions:
+        key = f"{c['type'].capitalize()} {c['number']}"
+        if key not in m:
+            m[key] = c["index"]
+        return m
+
+def link_references_to_captions(references,caption_map):
+    link = []
+    for r in references:
+        key = f"{r['type'].capitalize()} {r['number']}"
+        caption_index = caption_map.get(key)
+        link.append({
+            "ref_index" : r.get("index"),
+            "ref_text" : r.get("text"),
+            "ref_type" : r.get("type"),
+            "ref_number" : r.get("number"),
+            "caption_index": caption_index
+        })
+    return link
+
 
 
 
@@ -294,18 +316,17 @@ def main():
     print("\nDOCX preview:")
     print(docx_text[:1000])
 
-    # Save raw extracted text
+ 
     save_text(pdf_text, OUT_DIR + "/pdf_content.txt")
     save_text(docx_text, OUT_DIR + "/docx_content.txt")
     print("\nSaved raw text.")
 
-    # Split into heading-based 'paragraphs'
-    print("Splitting into paragraphs...")
+
     pdf_paras = split_into_paragraphs(pdf_text)
     docx_paras = split_into_paragraphs(docx_text)
     print(f"PDF paragraphs: {len(pdf_paras)}, DOCX paragraphs: {len(docx_paras)}")
 
-    # Index and save
+
     indexed_pdf = index_paragraphs(pdf_paras)
     indexed_docx = index_paragraphs(docx_paras)
 
@@ -358,9 +379,130 @@ docx_references = detect_fig_table(docx_paragraphs)
 with open("outputs/pdf_references.json", "w", encoding="utf-8") as f:
     json.dump(pdf_references, f, indent=2, ensure_ascii=False)
 
-with open("outputs/docx_references.json", "w", encoding="utf-8") as f:
-    json.dump(docx_references, f, indent=2, ensure_ascii=False)
+with open("outputs/pdf_captions.json", "r", encoding="utf-8") as f:
+    pdf_captions = json.load(f)
 
+with open("outputs/pdf_references.json", "r", encoding="utf-8") as f:
+    pdf_references = json.load(f)
+
+with open("outputs/docx_captions.json", "r", encoding="utf-8") as f:
+    docx_captions = json.load(f)
+
+with open("outputs/docx_references.json", "r", encoding="utf-8") as f:
+    docx_references = json.load(f)
+
+
+pdf_caption_map = build_captions_map(pdf_captions)
+docx_caption_map = build_captions_map(docx_captions)
+
+pdf_links = link_references_to_captions(pdf_references, pdf_caption_map)
+docx_links = link_references_to_captions(docx_references, docx_caption_map)
+
+with open("outputs/pdf_references_links.json","w",encoding="utf-8") as f:
+    json.dump(pdf_links, f, indent=2, ensure_ascii = False)
+with open("outputs/docx_references_links.json","w",encoding="utf-8") as f:
+    json.dump(docx_links, f, indent=2, ensure_ascii = False)
+print("Refernces saved successfully!")
+
+with open("outputs/pdf_paragraphs.json", "r", encoding="utf-8") as f:
+        pdf_paragraphs = json.load(f)
+
+with open("outputs/pdf_headings.json", "r", encoding="utf-8") as f:
+        pdf_headings = json.load(f)
+
+with open("outputs/pdf_captions.json", "r", encoding="utf-8") as f:
+        pdf_captions = json.load(f)
+
+with open("outputs/pdf_references.json", "r", encoding="utf-8") as f:
+        pdf_references = json.load(f)
+
+pdf_doc = fitz.open("data/realistic_extraction_paper.pdf")
+pdf_page_count = len(pdf_doc)
+pdf_doc.close()
+
+with open("outputs/pdf_content.txt", "r", encoding="utf-8") as f:
+        pdf_text = f.read()
+        pdf_word_count = len(re.findall(r"\w+", pdf_text))
+
+with open("outputs/docx_paragraphs.json", "r", encoding="utf-8") as f:
+        docx_paragraphs = json.load(f)
+
+with open("outputs/docx_headings.json", "r", encoding="utf-8") as f:
+        docx_headings = json.load(f)
+
+with open("outputs/docx_captions.json", "r", encoding="utf-8") as f:
+        docx_captions = json.load(f)
+
+with open("outputs/docx_references.json", "r", encoding="utf-8") as f:
+        docx_references = json.load(f)
+
+with open("outputs/docx_content.txt", "r", encoding="utf-8") as f:
+        docx_text = f.read()
+        docx_word_count = len(re.findall(r"\w+", docx_text))
+pdf_manifest = {
+        "file_name": "realistic_extraction_paper.pdf",
+        "file_type": "pdf",
+        "page_count": pdf_page_count,
+        "word_count": pdf_word_count,
+        "paragraph_count": len(pdf_paragraphs),
+        "heading_count": len(pdf_headings),
+        "figure_caption_count": sum(1 for c in pdf_captions if c["type"] == "figure"),
+        "table_caption_count": sum(1 for c in pdf_captions if c["type"] == "table"),
+        "reference_count": len(pdf_references)
+    }
+docx_manifest = {
+        "file_name": "realistic_extraction_paper.docx",
+        "file_type": "docx",
+        "page_count": None,
+        "word_count": docx_word_count,
+        "paragraph_count": len(docx_paragraphs),
+        "heading_count": len(docx_headings),
+        "figure_caption_count": sum(1 for c in docx_captions if c["type"] == "figure"),
+        "table_caption_count": sum(1 for c in docx_captions if c["type"] == "table"),
+        "reference_count": len(docx_references)
+    }
+
+
+    
+with open("outputs/pdf_manifest.json", "w", encoding="utf-8") as f:
+        json.dump(pdf_manifest, f, indent=2, ensure_ascii=False)
+
+with open("outputs/docx_manifest.json", "w", encoding="utf-8") as f:
+        json.dump(docx_manifest, f, indent=2, ensure_ascii=False)
+
+
+import csv
+csv_header = [
+        "file_name", "file_type", "page_count", "word_count",
+        "paragraph_count", "heading_count",
+        "figure_caption_count", "table_caption_count",
+        "reference_count"
+    ]
+
+csv_exists = os.path.exists("outputs/manifest.csv")
+
+with open("outputs/manifest.csv", "a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+
+       
+        if not csv_exists:
+            writer.writerow(csv_header)
+
+        writer.writerow([
+            pdf_manifest["file_name"], pdf_manifest["file_type"], pdf_manifest["page_count"],
+            pdf_manifest["word_count"], pdf_manifest["paragraph_count"],
+            pdf_manifest["heading_count"], pdf_manifest["figure_caption_count"],
+            pdf_manifest["table_caption_count"], pdf_manifest["reference_count"]
+        ])
+
+        writer.writerow([
+            docx_manifest["file_name"], docx_manifest["file_type"], docx_manifest["page_count"],
+            docx_manifest["word_count"], docx_manifest["paragraph_count"],
+            docx_manifest["heading_count"], docx_manifest["figure_caption_count"],
+            docx_manifest["table_caption_count"], docx_manifest["reference_count"]
+        ])
+
+print("Manifest generation complete.")
 
 
 if __name__ == "__main__":

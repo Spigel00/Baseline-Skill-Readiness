@@ -47,19 +47,44 @@ I focused on extracting data from PDFs and Word files, I've used PyMuPDF for PDF
 
 What i did:
 
-I have uploaded same files:
-data/relaistic_extraction_paper.docx and data/relaistic_extraction_paper.pdf 
-Basic blank-line splitter (failed on single-newline PDFs).
-Inserted blank lines before line-start numbered headings and known headings (improved slightly).
-Inserted single newlines before inline numbered headings and known-words (caused uneven fragments).
-Collapsed single newlines into spaces inside chunks to fix line wraps.
+I used the same document in PDF and DOCX to compare extraction behavior
+data/realistic_extraction_paper.pdf  
+data/realistic_extraction_paper.docx
+
+Splitting experiments I tried:
+
+Basic blank-line splitter:
+Did not work well because PDFs often have single newlines, not blank lines.
+
+Inserted blank lines before numbered headings:
+Improved segmentation a little.
+
+Inserted blank lines before known headings:
+Helped but still not perfect.
+
+Inserted single \n before inline headings:
+Broke paragraphs into uneven chunks.
+
+Collapsed internal line-wrap newlines into spaces:
+Fixed mid-sentence breaks.
 
 Root cause: inserting single `\n` before inline headings is not sufficient for the `\n\n+` split step — single newlines remained and collapsing later joined fragments in awkward places.
 
 What i learnt:
 
-Learned to work with PyMuPDF and python docx. 
-.spli() - splits whatever escape sequences given in it
-.strip() - removes spaces at the beginning and end
-.enumerate() - we can iterate 2 things at a time
+PyMuPDF for reading PDF text page-by-page
+python-docx for reading document paragraphs
+spli() - splits whatever escape sequences given in it
+strip() - removes spaces at the beginning and end
+enumerate() - we can iterate 2 things at a time
+json.load() / json.dump() → work with JSON files
+re.sub() → edit text using regex
+re.split() → split using regex patterns
 
+Why PDF extraction is tricky:
+
+PDF paragraphs do NOT come in well-structured blocks
+Line breaks do not equal real paragraphs
+Must create artificial boundaries before headings and known section names
+
+I now have a certain amount of understanding on regex but have to work more in that!
