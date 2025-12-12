@@ -88,3 +88,37 @@ Line breaks do not equal real paragraphs
 Must create artificial boundaries before headings and known section names
 
 I now have a certain amount of understanding on regex but have to work more in that!
+
+
+TASK 4: 
+
+What I focused on:
+
+Combining all extracted components (paragraphs, headings, captions, references, links, manifest values)
+Learning how to organize outputs into a single structured JSON
+Designing a proper metadata schema used in real extraction systems
+Creating a new script (build_metadata.py) to assemble final metadata files for PDF and DOCX
+
+What I Did:
+
+Loaded all intermediate JSON files generated earlier:
+
+*_paragraphs.json, *_headings.json, *_captions.json, *_references.json, *_reference_links.json, *_manifest.json, *_content.txt
+
+Computed:
+
+word_count,page_count (for PDF),caption counts,heading counts,reference counts
+
+Created one unified metadata dictionary for each document
+
+Saved final outputs:
+outputs/pdf_metadata.json
+outputs/docx_metadata.json
+
+What I Learned:
+
+How to assemble multi-stage extraction outputs
+How real metadata pipelines work
+How to load multiple JSON files safely
+How to calculate useful document statistics
+How to design a clean metadata schema
